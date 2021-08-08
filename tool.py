@@ -17,10 +17,12 @@ def ffmpeg_crf_encode(video, crf_value, encoded_video, filenameWithoutExt):
     
 
 def calculate_vmaf(video, crf_value, encoded_video, filenameWithoutExt):
-    if os.path.isfile(encoded_video):
+    vmafFilename = f"{filenameWithoutExt}_encoded_{crf_value}.json"
+    if os.path.isfile(vmafFilename):
         # we dont want to re-calculate VMAP again and again 
         return
-    os.system(f"{ffmpeg} -i {video} -i  {encoded_video} -lavfi \"libvmaf=log_fmt=json:log_path=/dev/stdout:model_path=/Users/usman.khalid/Downloads/vmaf-master/model/vmaf_v0.6.1.json\"  -f null - > {filenameWithoutExt}_encoded_{crf_value}.json")
+    
+    os.system(f"{ffmpeg} -i {video} -i  {encoded_video} -lavfi \"libvmaf=log_fmt=json:log_path=/dev/stdout:model_path=/Users/usman.khalid/Downloads/vmaf-master/model/vmaf_v0.6.1.json\"  -f null - > {vmafFilename}")
 
 
 
@@ -31,3 +33,4 @@ print("filename with extension: ", filename)
 crfs = [30]
 for crf in crfs :  
     ffmpeg_crf_encode(filename, crf, f"{filenameWithoutExt}_encoded_{crf}.mkv", filenameWithoutExt) 
+    calculate_vmaf(filename, crf, f"{filenameWithoutExt}_encoded_{crf}.mkv", filenameWithoutExt) 
