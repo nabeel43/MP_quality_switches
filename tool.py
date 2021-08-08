@@ -31,7 +31,7 @@ transitionResolution = sys.argv[2]
 filenameWithoutExt = Path(filename).stem
 print("File name without extension: ", filenameWithoutExt)
 print("filename with extension: ", filename)   
-crfs = [26]
+crfs = [26,30,32]
 for crf in crfs :  
     ffmpeg_crf_encode(filename, crf, f"{filenameWithoutExt}_encoded_{crf}.mkv", filenameWithoutExt, transitionResolution) 
     calculate_vmaf(filename, crf, f"{filenameWithoutExt}_encoded_{crf}.mkv", filenameWithoutExt) 
